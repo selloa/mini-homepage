@@ -90,6 +90,7 @@
           <th>Episode</th>
           <th>URL</th>
           <th>Bereinigter Link</th>
+          <th>Im Wiki gefixt</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -159,6 +160,7 @@
         const episode = row.episode || "";
         const url = row.url || "";
         const cleaned = row.bereinigter_link || "";
+        const fixed = row.wiki_link_fixed || "";
 
         return (
           "<tr>" +
@@ -166,6 +168,7 @@
             "<td>" + episode + "</td>" +
             "<td>" + makeLinkCell(url) + "</td>" +
             "<td>" + makeLinkCell(cleaned) + "</td>" +
+            "<td>" + (fixed || '<span class=\"muted\">-</span>') + "</td>" +
           "</tr>"
         );
       }).join("");
@@ -186,7 +189,8 @@
           row.kategorie || "",
           row.episode || "",
           row.url || "",
-          row.bereinigter_link || ""
+          row.bereinigter_link || "",
+          row.wiki_link_fixed || ""
         ].join(" ").toLowerCase();
         return haystack.includes(query);
       });
