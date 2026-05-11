@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MMM Episoden Links</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 24px;
+      color: #222;
+      background: #fafafa;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.6rem;
+    }
+    p {
+      margin: 0 0 16px;
+      color: #555;
+    }
+    .status {
+      margin-bottom: 14px;
+      font-size: 0.95rem;
+      color: #444;
+    }
+    .toolbar {
+      margin-bottom: 12px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    #searchInput {
+      width: 100%;
+      max-width: 480px;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.92rem;
+      background: #fff;
+    }
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid #ddd;
+      background: #fff;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 780px;
+    }
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      vertical-align: top;
+      font-size: 0.92rem;
+    }
+    th {
+      position: sticky;
+      top: 0;
+      background: #f3f3f3;
+      z-index: 1;
+    }
+    a {
+      color: #0b57d0;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .muted {
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <h1>MMM Episoden Übersicht</h1>
+  <p>Datenquelle: <code>mmm_episoden_links.csv</code></p>
+  <div class="status" id="status">Lade CSV...</div>
+  <div class="toolbar">
+    <input id="searchInput" type="search" placeholder="Suche nach Kategorie, Episode oder URL...">
+  </div>
+
+  <div class="table-wrap">
+    <table id="episodesTable">
+      <thead>
+        <tr>
+          <th>Kategorie</th>
+          <th>Episode</th>
+          <th>URL</th>
+          <th>Bereinigter Link</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    let allRows = [];
+
+    function parseCsvLine(line) {
+      const result = [];
+      let current = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        const next = line[i + 1];
+
+        if (ch === '"' && inQuotes && next === '"') {
+          current += '"';
+          i++;
+          continue;
+        }
+        if (ch === '"') {
+          inQuotes = !inQuotes;
+          continue;
+        }
+        if (ch === "," && !inQuotes) {
+          result.push(current);
+          current = "";
+          continue;
+        }
+        current += ch;
+      }
+      result.push(current);
+      return result;
+    }
+
+    function parseCsv(text) {
+      const lines = text.split(/\r?\n/).filter((line) => line.trim() !== "");
+      if (lines.length === 0) return [];
+
+      const headers = parseCsvLine(lines[0]);
+      const rows = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const values = parseCsvLine(lines[i]);
+        const row = {};
+        for (let j = 0; j < headers.length; j++) {
+          row[headers[j]] = values[j] || "";
+        }
+        rows.push(row);
+      }
+      return rows;
+    }
+
+    function makeLinkCell(url) {
+      if (!url) return '<span class="muted">-</span>';
+      const safe = url.replace(/"/g, "&quot;");
+      return '<a href="' + safe + '" target="_blank" rel="noopener noreferrer">' + safe + "</a>";
+    }
+
+    function renderRows(rows) {
+      const tbody = document.querySelector("#episodesTable tbody");
+      const html = rows.map((row) => {
+        const category = row.kategorie || "";
+        const episode = row.episode || "";
+        const url = row.url || "";
+        const cleaned = row.bereinigter_link || "";
+
+        return (
+          "<tr>" +
+            "<td>" + category + "</td>" +
+            "<td>" + episode + "</td>" +
+            "<td>" + makeLinkCell(url) + "</td>" +
+            "<td>" + makeLinkCell(cleaned) + "</td>" +
+          "</tr>"
+        );
+      }).join("");
+      tbody.innerHTML = html;
+    }
+
+    function applyFilter() {
+      const statusEl = document.getElementById("status");
+      const query = document.getElementById("searchInput").value.trim().toLowerCase();
+      if (!query) {
+        renderRows(allRows);
+        statusEl.textContent = "Geladen: " + allRows.length + " Einträge.";
+        return;
+      }
+
+      const filtered = allRows.filter((row) => {
+        const haystack = [
+          row.kategorie || "",
+          row.episode || "",
+          row.url || "",
+          row.bereinigter_link || ""
+        ].join(" ").toLowerCase();
+        return haystack.includes(query);
+      });
+
+      renderRows(filtered);
+      statusEl.textContent = "Gefiltert: " + filtered.length + " von " + allRows.length + " Einträgen.";
+    }
+
+    async function loadTable() {
+      const statusEl = document.getElementById("status");
+
+      try {
+        const response = await fetch("./mmm_episoden_links.csv");
+        if (!response.ok) {
+          throw new Error("CSV konnte nicht geladen werden (HTTP " + response.status + ").");
+        }
+
+        const csvText = await response.text();
+        allRows = parseCsv(csvText);
+
+        if (allRows.length === 0) {
+          statusEl.textContent = "CSV geladen, aber keine Daten gefunden.";
+          return;
+        }
+
+        renderRows(allRows);
+        statusEl.textContent = "Geladen: " + allRows.length + " Einträge.";
+      } catch (err) {
+        statusEl.textContent = "Fehler: " + err.message + " Tipp: Seite über einen lokalen Server öffnen (nicht als file://).";
+      }
+    }
+
+    document.getElementById("searchInput").addEventListener("input", applyFilter);
+    loadTable();
+  </script>
+</body>
+</html>
