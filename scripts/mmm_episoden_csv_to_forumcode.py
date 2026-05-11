@@ -35,11 +35,11 @@ COL_EP = "episode"
 COL_AT_NEU = "AT-Forum-Link (neu)"
 COL_MMM = "MMM-Forum-Link"
 COL_WIKI = "wiki_url"
+COL_LP = "Longplay-Link"
 
-WIKI_LEAD = """[b]MMM-Wiki[/b]
-[list]
-[li][url=http://wiki.maniac-mansion-mania.de/wiki/Episoden]Episoden-Übersicht im MMM-Wiki[/url][/li]
-[/list]"""
+WIKI_LEAD_NAME = "MMM-Wiki"
+WIKI_LEAD_LINK_TEXT = "Episoden-Übersicht im MMM-Wiki"
+WIKI_LEAD_URL = "http://wiki.maniac-mansion-mania.de/wiki/Episoden"
 
 
 def bbcode_escape_label(s: str) -> str:
@@ -51,19 +51,23 @@ TITLE_LEADING_NBSP = 4   # Einrückung der Episodentitel innerhalb einer Kategor
 TITLE_TRAILING_NBSP = 10  # Abstand nach dem Episodentitel bis zur forum-Spalte
 BULLET = "•"  # Bullet vor jedem Episodentitel (U+2022)
 
-# Tabelle hat 6 Spalten: Titel | forum | "|" | wiki | "|" | at
-N_COLS = 6
+# Tabelle hat 8 Spalten: Titel | forum | "|" | wiki | "|" | at | "|" | lp
+N_COLS = 8
 
 
-def row_to_tr(episode: str, at_neu: str, mmm: str, wiki: str) -> str:
+def row_to_tr(
+    episode: str, at_neu: str, mmm: str, wiki: str, lp: str
+) -> str:
     title = bbcode_escape_label((episode or "").strip())
     at = (at_neu or "").strip()
     m = (mmm or "").strip()
     w = (wiki or "").strip()
+    lp_url = (lp or "").strip()
 
     forum = f"[url={m}][i]forum[/i][/url]" if m else "[i]forum[/i]"
     wiki_word = f"[url={w}][i]wiki[/i][/url]" if w else "[i]wiki[/i]"
     at_word = f"[url={at}][i]at[/i][/url]" if at else "[i]at[/i]"
+    lp_word = f"[url={lp_url}][i]lp[/i][/url]" if lp_url else "[i]lp[/i]"
 
     title_padded = (
         NBSP * TITLE_LEADING_NBSP
@@ -77,7 +81,9 @@ def row_to_tr(episode: str, at_neu: str, mmm: str, wiki: str) -> str:
         f"[td]|[/td]"
         f"[td]{wiki_word}[/td]"
         f"[td]|[/td]"
-        f"[td]{at_word}[/td][/tr]"
+        f"[td]{at_word}[/td]"
+        f"[td]|[/td]"
+        f"[td]{lp_word}[/td][/tr]"
     )
 
 
@@ -87,6 +93,16 @@ def empty_tr() -> str:
 
 def category_tr(kat: str) -> str:
     return f"[tr][td][b]{kat}[/b][/td]" + "[td][/td]" * (N_COLS - 1) + "[/tr]"
+
+
+def wiki_lead_tr() -> str:
+    """Eintrag in derselben Tabellenform wie ein Episodentitel, aber verlinkt."""
+    text = (
+        NBSP * TITLE_LEADING_NBSP
+        + f"{BULLET}{NBSP}[url={WIKI_LEAD_URL}]{WIKI_LEAD_LINK_TEXT}[/url]"
+        + NBSP * TITLE_TRAILING_NBSP
+    )
+    return f"[tr][td]{text}[/td]" + "[td][/td]" * (N_COLS - 1) + "[/tr]"
 
 
 def load_rows(path: Path) -> list[dict[str, str]]:
@@ -107,24 +123,22 @@ def build_forumcode(rows: list[dict[str, str]]) -> str:
             row.get(COL_AT_NEU) or "",
             row.get(COL_MMM) or "",
             row.get(COL_WIKI) or "",
+            row.get(COL_LP) or "",
         )
         by_cat.setdefault(kat, []).append(tr)
 
-    if not by_cat:
-        return f"{WIKI_LEAD}\n"
-
-    rows: list[str] = []
-    first = True
+    rows: list[str] = [
+        category_tr(WIKI_LEAD_NAME),
+        wiki_lead_tr(),
+    ]
     for kat, trs in by_cat.items():
         if not trs:
             continue
-        if not first:
-            rows.append(empty_tr())
+        rows.append(empty_tr())
         rows.append(category_tr(kat))
         rows.extend(trs)
-        first = False
     table = "[table]\n" + "\n".join(rows) + "\n[/table]"
-    return f"{WIKI_LEAD}\n\n{table}\n"
+    return f"{table}\n"
 
 
 def default_csv_path() -> Path:

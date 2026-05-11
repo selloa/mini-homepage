@@ -97,7 +97,8 @@
     const COLUMN_LABELS = {
       kategorie: "Kategorie",
       episode: "Episode",
-      wiki_url: "Wiki (ManiacWiki)"
+      wiki_url: "Wiki (ManiacWiki)",
+      "Longplay-Link": "Longplay"
     };
 
     function columnTitle(key) {
@@ -160,16 +161,24 @@
       return { headers, rows };
     }
 
-    function makeLinkCell(url) {
+    function makeLinkCell(url, label) {
       if (!url) return '<span class="muted">-</span>';
-      const safe = url.replace(/"/g, "&quot;");
-      return '<a href="' + safe + '" target="_blank" rel="noopener noreferrer">' + safe + "</a>";
+      const safeHref = url.replace(/"/g, "&quot;");
+      const safeLabel = escapeHtml(label || url);
+      return '<a href="' + safeHref + '" target="_blank" rel="noopener noreferrer">' + safeLabel + "</a>";
     }
 
-    function cellHtml(value) {
+    function linkLabelFor(url, columnKey) {
+      if (columnKey === "Longplay-Link" && /youtube\.com|youtu\.be/i.test(url)) {
+        return "\u25B6 YouTube";
+      }
+      return url;
+    }
+
+    function cellHtml(value, columnKey) {
       const v = (value || "").trim();
       if (!v) return '<span class="muted">-</span>';
-      if (/^https?:\/\//i.test(v)) return makeLinkCell(v);
+      if (/^https?:\/\//i.test(v)) return makeLinkCell(v, linkLabelFor(v, columnKey));
       return escapeHtml(v);
     }
 
@@ -185,7 +194,7 @@
       const html = rows
         .map((row) => {
           const tds = columnHeaders
-            .map((key) => "<td>" + cellHtml(row[key]) + "</td>")
+            .map((key) => "<td>" + cellHtml(row[key], key) + "</td>")
             .join("");
           return "<tr>" + tds + "</tr>";
         })
