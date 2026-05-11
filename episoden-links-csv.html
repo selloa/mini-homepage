@@ -47,7 +47,7 @@
     table {
       border-collapse: collapse;
       width: 100%;
-      min-width: 780px;
+      min-width: max-content;
     }
     th, td {
       padding: 8px 10px;
@@ -79,26 +79,42 @@
   <p>Datenquelle: <code>mmm_episoden_links.csv</code></p>
   <div class="status" id="status">Lade CSV...</div>
   <div class="toolbar">
-    <input id="searchInput" type="search" placeholder="Suche nach Kategorie, Episode oder URL...">
+    <input id="searchInput" type="search" placeholder="Suche in allen Spalten…">
   </div>
 
   <div class="table-wrap">
     <table id="episodesTable">
-      <thead>
-        <tr>
-          <th>Kategorie</th>
-          <th>Episode</th>
-          <th>URL</th>
-          <th>Bereinigter Link</th>
-          <th>Im Wiki gefixt</th>
-        </tr>
-      </thead>
+      <thead><tr id="episodesTableHeadRow"></tr></thead>
       <tbody></tbody>
     </table>
   </div>
 
   <script>
     let allRows = [];
+    let columnHeaders = [];
+
+    /** Spalten-Überschriften (bekannte Keys); weitere CSV-Spalten erscheinen automatisch. */
+    const COLUMN_LABELS = {
+      kategorie: "Kategorie",
+      episode: "Episode",
+      url: "URL",
+      bereinigter_link: "Bereinigter Link",
+      wiki_url: "Wiki (ManiacWiki)",
+      wiki_link_fixed: "Wiki-Link Fix"
+    };
+
+    function columnTitle(key) {
+      if (COLUMN_LABELS[key]) return COLUMN_LABELS[key];
+      return key.replace(/_/g, " ");
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
 
     function parseCsvLine(line) {
       const result = [];
@@ -131,7 +147,7 @@
 
     function parseCsv(text) {
       const lines = text.split(/\r?\n/).filter((line) => line.trim() !== "");
-      if (lines.length === 0) return [];
+      if (lines.length === 0) return { headers: [], rows: [] };
 
       const headers = parseCsvLine(lines[0]);
       const rows = [];
@@ -144,7 +160,7 @@
         }
         rows.push(row);
       }
-      return rows;
+      return { headers, rows };
     }
 
     function makeLinkCell(url) {
@@ -153,25 +169,30 @@
       return '<a href="' + safe + '" target="_blank" rel="noopener noreferrer">' + safe + "</a>";
     }
 
+    function cellHtml(value) {
+      const v = (value || "").trim();
+      if (!v) return '<span class="muted">-</span>';
+      if (/^https?:\/\//i.test(v)) return makeLinkCell(v);
+      return escapeHtml(v);
+    }
+
+    function renderTableHead() {
+      const tr = document.getElementById("episodesTableHeadRow");
+      tr.innerHTML = columnHeaders
+        .map((key) => "<th>" + escapeHtml(columnTitle(key)) + "</th>")
+        .join("");
+    }
+
     function renderRows(rows) {
       const tbody = document.querySelector("#episodesTable tbody");
-      const html = rows.map((row) => {
-        const category = row.kategorie || "";
-        const episode = row.episode || "";
-        const url = row.url || "";
-        const cleaned = row.bereinigter_link || "";
-        const fixed = row.wiki_link_fixed || "";
-
-        return (
-          "<tr>" +
-            "<td>" + category + "</td>" +
-            "<td>" + episode + "</td>" +
-            "<td>" + makeLinkCell(url) + "</td>" +
-            "<td>" + makeLinkCell(cleaned) + "</td>" +
-            "<td>" + (fixed || '<span class=\"muted\">-</span>') + "</td>" +
-          "</tr>"
-        );
-      }).join("");
+      const html = rows
+        .map((row) => {
+          const tds = columnHeaders
+            .map((key) => "<td>" + cellHtml(row[key]) + "</td>")
+            .join("");
+          return "<tr>" + tds + "</tr>";
+        })
+        .join("");
       tbody.innerHTML = html;
     }
 
@@ -185,13 +206,10 @@
       }
 
       const filtered = allRows.filter((row) => {
-        const haystack = [
-          row.kategorie || "",
-          row.episode || "",
-          row.url || "",
-          row.bereinigter_link || "",
-          row.wiki_link_fixed || ""
-        ].join(" ").toLowerCase();
+        const haystack = columnHeaders
+          .map((key) => row[key] || "")
+          .join(" ")
+          .toLowerCase();
         return haystack.includes(query);
       });
 
@@ -208,14 +226,18 @@
           throw new Error("CSV konnte nicht geladen werden (HTTP " + response.status + ").");
         }
 
-        const csvText = await response.text();
-        allRows = parseCsv(csvText);
+        let csvText = await response.text();
+        csvText = csvText.replace(/^\uFEFF/, "");
+        const parsed = parseCsv(csvText);
+        columnHeaders = parsed.headers;
+        allRows = parsed.rows;
 
         if (allRows.length === 0) {
           statusEl.textContent = "CSV geladen, aber keine Daten gefunden.";
           return;
         }
 
+        renderTableHead();
         renderRows(allRows);
         statusEl.textContent = "Geladen: " + allRows.length + " Einträge.";
       } catch (err) {
