@@ -359,6 +359,20 @@
       var WIKI_ORIGIN = "http://wiki.maniac-mansion-mania.de";
       var API = WIKI_ORIGIN + "/api.php";
       var PAGE_TITLE = "Episoden";
+      /**
+       * GitHub Pages (https) darf nicht per fetch auf http:// zugreifen (Mixed Content).
+       * Das Wiki-Zertifikat für https passt nicht zum Hostnamen; direkter https-Aufruf scheitert im Browser.
+       * In dem Fall: Anfrage über einen öffentlichen HTTPS-CORS-Proxy (nur API-Lesezugriff).
+       */
+      var CORS_PROXY_PREFIX = "https://corsproxy.io/?";
+
+      function apiFetchUrl(searchParams) {
+        var direct = API + "?" + searchParams.toString();
+        if (location.protocol === "https:" && /^http:\/\//i.test(WIKI_ORIGIN)) {
+          return CORS_PROXY_PREFIX + encodeURIComponent(direct);
+        }
+        return direct;
+      }
 
       var el = {
         loading: document.getElementById("loading"),
@@ -653,9 +667,7 @@
         el.filter.disabled = true;
         el.reload.disabled = true;
 
-        var url =
-          API +
-          "?" +
+        var url = apiFetchUrl(
           new URLSearchParams({
             action: "query",
             titles: PAGE_TITLE,
@@ -664,7 +676,8 @@
             format: "json",
             formatversion: "2",
             origin: "*",
-          });
+          })
+        );
 
         fetch(url)
           .then(function (r) {
@@ -699,7 +712,7 @@
             setError(
               "Konnte die Episoden-Seite nicht laden: " +
                 (e.message || e) +
-                ". Prüfe die Netzwerkverbindung; die API muss CORS mit origin=* erlauben."
+                ". Prüfe die Netzwerkverbindung bzw. ob der CORS-Proxy erreichbar ist."
             );
           });
       }
