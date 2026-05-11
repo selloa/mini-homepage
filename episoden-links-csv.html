@@ -98,7 +98,8 @@
       kategorie: "Kategorie",
       episode: "Episode",
       wiki_url: "Wiki (ManiacWiki)",
-      "Longplay-Link": "Longplay"
+      "Longplay-Link": "Longplay",
+      "Download-Link": "Download"
     };
 
     function columnTitle(key) {
@@ -171,6 +172,9 @@
     function linkLabelFor(url, columnKey) {
       if (columnKey === "Longplay-Link" && /youtube\.com|youtu\.be/i.test(url)) {
         return "\u25B6 YouTube";
+      }
+      if (columnKey === "Download-Link") {
+        return "\u2B07 Download";
       }
       return url;
     }
