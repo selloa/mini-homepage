@@ -99,7 +99,8 @@
       episode: "Episode",
       wiki_url: "Wiki (ManiacWiki)",
       "Longplay-Link": "Longplay",
-      "Download-Link": "Download"
+      "Download-Link": "Download",
+      "Download-Link (clean)": "Download (clean)"
     };
 
     function columnTitle(key) {
@@ -166,7 +167,11 @@
       if (!url) return '<span class="muted">-</span>';
       const safeHref = url.replace(/"/g, "&quot;");
       const safeLabel = escapeHtml(label || url);
-      return '<a href="' + safeHref + '" target="_blank" rel="noopener noreferrer">' + safeLabel + "</a>";
+      // Note: deliberately NOT using rel="noreferrer" here. Some target sites
+      // (e.g. the maniac-mansion-mania.com docman download endpoint) perform
+      // a referer/hotlink check and refuse the download when no Referer is
+      // sent. We keep rel="noopener" for the usual tab-isolation security.
+      return '<a href="' + safeHref + '" target="_blank" rel="noopener">' + safeLabel + "</a>";
     }
 
     function linkLabelFor(url, columnKey) {
@@ -175,6 +180,9 @@
       }
       if (columnKey === "Download-Link") {
         return "\u2B07 Download";
+      }
+      if (columnKey === "Download-Link (clean)") {
+        return "\u2B07 Download (clean)";
       }
       return url;
     }
