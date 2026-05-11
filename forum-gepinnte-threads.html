@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MMM-Forum – Gepinnte Threads</title>
+  <style>
+    :root {
+      --bg: #0e0e12;
+      --text: #ece9e4;
+      --muted: #9c9690;
+      --accent: #d4a853;
+      --link: #8ec5ff;
+      --card: #1f1f2a;
+      --border: rgba(255, 255, 255, 0.1);
+      font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+    .wrap {
+      max-width: 56rem;
+      margin: 0 auto;
+    }
+    nav.back {
+      margin-bottom: 1.25rem;
+    }
+    nav.back a {
+      color: var(--link);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    nav.back a:hover {
+      text-decoration: underline;
+      color: var(--accent);
+    }
+    h1 {
+      font-size: 1.65rem;
+      font-weight: 600;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    h1 span { color: var(--accent); }
+    .intro {
+      color: var(--muted);
+      margin: 0 0 2rem;
+      max-width: 40rem;
+    }
+    .intro strong { color: var(--text); }
+    section {
+      margin-bottom: 2rem;
+      scroll-margin-top: 0.5rem;
+    }
+    h2 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 0 0 0.65rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--accent);
+    }
+    .empty {
+      color: var(--muted);
+      font-style: italic;
+      margin: 0;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    th, td {
+      padding: 0.5rem 0.65rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    tr:last-child td { border-bottom: none; }
+    th {
+      background: rgba(0, 0, 0, 0.25);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .num { text-align: right; white-space: nowrap; }
+    .foot {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .foot strong { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="back"><a href="index.html">← Home</a></nav>
+
+    <h1><span>MMM</span>-Forum – Gepinnte Threads</h1>
+    <p class="intro">
+      Pro Abschnitt: Threads, die du aus der jeweiligen Forenliste als gepinnt kopiert hast.<br />
+      Spalten: <strong>Antworten</strong>, <strong>Aufrufe</strong>, <strong>Letzter Beitrag</strong> (Begonnen von / letzter Poster werden nicht gespeichert).
+    </p>
+
+    <section id="news-news">
+      <h2>News › News</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Spenden für MMM</td><td class="num">67</td><td class="num">122810</td><td>15. Februar 2026, 09:06:01</td></tr>
+            <tr><td>MMM-Forum-Suche im Browsersuchfeld</td><td class="num">5</td><td class="num">28370</td><td>07. Januar 2013, 18:07:07</td></tr>
+            <tr><td>Entwicklerzugänge sind ab heute verfügbar.</td><td class="num">39</td><td class="num">90882</td><td>18. Juli 2010, 10:53:38</td></tr>
+            <tr><td>Kommt doch mal in den Chat, das wär nett</td><td class="num">82</td><td class="num">164430</td><td>19. April 2010, 22:01:23</td></tr>
+            <tr><td>Forenregeln</td><td class="num">0</td><td class="num">33888</td><td>23. November 2006, 12:38:58</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="episoden">
+      <h2>MMM-Episoden › Episoden</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Wichtig: Download von Episoden Neu</td><td class="num">0</td><td class="num">29962</td><td>14. Mai 2008, 16:22:18</td></tr>
+            <tr><td>Neues &quot;Tipps und Tricks&quot; - Forum Neu</td><td class="num">0</td><td class="num">29459</td><td>17. Oktober 2007, 16:58:48</td></tr>
+            <tr><td>Threads zu den einzelnen Episoden (einschließlich Specials)</td><td class="num">0</td><td class="num">35347</td><td>18. Oktober 2006, 23:10:45</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="mini-episoden">
+      <h2>MMM-Episoden › Episoden › Mini Episoden</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Was zum Geier ist MMMMM? Neu</td><td class="num">1</td><td class="num">24067</td><td>28. Juni 2015, 21:21:51</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="specials">
+      <h2>MMM-Episoden › Episoden › Specials</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Chronik zu Maniac Dungeon Neu</td><td class="num">26</td><td class="num">54894</td><td>07. September 2015, 11:57:30</td></tr>
+            <tr><td>Bitte beachten: Regeln für Maniac Dungeon-Räume Neu</td><td class="num">0</td><td class="num">18095</td><td>20. Dezember 2009, 03:18:57</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="trash">
+      <h2>MMM-Episoden › Episoden › Trash Episoden</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Trash? Was darf eigentlich Trash sein - die Regeln zur Mülltrennung Neu</td><td class="num">0</td><td class="num">24804</td><td>09. Juni 2008, 13:22:32</td></tr>
+            <tr><td>Wichtig: Download von Episoden Neu</td><td class="num">0</td><td class="num">21295</td><td>14. Mai 2008, 16:29:36</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tipps-tricks">
+      <h2>MMM-Episoden › Tipps und Tricks</h2>
+      <p class="empty">Keine gepinnten Threads.</p>
+    </section>
+
+    <section id="ideendatenbank">
+      <h2>MMM-Episoden › Episoden in Entwicklung - Ideendatenbank</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Episoden in Entwicklung - Ankündigungen</td><td class="num">167</td><td class="num">199971</td><td>25. April 2024, 17:12:22</td></tr>
+            <tr><td>Betatester gesucht Neu</td><td class="num">22</td><td class="num">50527</td><td>06. Januar 2018, 21:27:08</td></tr>
+            <tr><td>Hilfe für aufgegebene Projekte Neu</td><td class="num">0</td><td class="num">27996</td><td>16. Mai 2007, 16:03:11</td></tr>
+            <tr><td>Episoden in Entwicklung - Die Liste</td><td class="num">0</td><td class="num">66934</td><td>08. November 2006, 11:54:43</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="ressourcen">
+      <h2>MMM-Werkzeugkiste › Ressourcen</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Hintergrundgrafiken auf dem MMM-Webspace: Eine Findliste</td><td class="num">16</td><td class="num">52027</td><td>17. Oktober 2024, 19:14:51</td></tr>
+            <tr><td>Weitere Starterpacks für AGS3 Neu</td><td class="num">185</td><td class="num">220095</td><td>26. Januar 2024, 21:29:34</td></tr>
+            <tr><td>Musiker gesucht:</td><td class="num">8</td><td class="num">30101</td><td>11. September 2020, 15:35:44</td></tr>
+            <tr><td>Vergessene Bilder Neu</td><td class="num">31</td><td class="num">79360</td><td>09. Februar 2019, 10:31:58</td></tr>
+            <tr><td>Figuren &amp; Objekte / MM-NES-Version</td><td class="num">31</td><td class="num">75064</td><td>11. Juli 2013, 14:17:25</td></tr>
+            <tr><td>Willige Arbeiter Neu</td><td class="num">13</td><td class="num">38852</td><td>08. März 2013, 14:54:18</td></tr>
+            <tr><td>Soundtracks für MMM-Episoden Neu</td><td class="num">20</td><td class="num">50658</td><td>03. Januar 2013, 11:53:28</td></tr>
+            <tr><td>Neue Sound-Effekte Neu</td><td class="num">3</td><td class="num">33615</td><td>09. Dezember 2006, 09:54:57</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="dottiges">
+      <h2>MMM-Werkzeugkiste › Ressourcen › DOTTiges</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Neue Dott-Backgrounds</td><td class="num">317</td><td class="num">284876</td><td>30. April 2010, 20:44:19</td></tr>
+            <tr><td>Work in progress: Dott-Charaktere! Neu</td><td class="num">3</td><td class="num">21196</td><td>20. März 2008, 20:41:11</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="technik">
+      <h2>MMM-Werkzeugkiste › Technik</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>MIDI Musik nicht mehr unterstützt in AGS Version 3.6 Neu</td><td class="num">4</td><td class="num">13359</td><td>11. November 2024, 14:52:52</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="newbies">
+      <h2>MMM-Werkzeugkiste › Technik › Newbies</h2>
+      <p class="empty">Keine gepinnten Threads.</p>
+    </section>
+
+    <section id="tutorials">
+      <h2>MMM-Werkzeugkiste › Technik › Tutorials</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Tutorials zur Erstellung von Episoden Neu</td><td class="num">16</td><td class="num">53247</td><td>16. August 2011, 21:38:00</td></tr>
+            <tr><td>MMM - Die eigene Episode - Anleitung für AGS Neu</td><td class="num">3</td><td class="num">38182</td><td>11. Februar 2011, 19:25:56</td></tr>
+            <tr><td>AGS3-Starterpacks: Enums, Funktionen und allgemeine Tipps Neu</td><td class="num">6</td><td class="num">19072</td><td>01. Juni 2010, 08:52:28</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="projekte">
+      <h2>MMM-Werkzeugkiste › Projekte und Ideen für MMM</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>MMM-Wiki Neu</td><td class="num">218</td><td class="num">281925</td><td>02. November 2024, 21:10:14</td></tr>
+            <tr><td>MMMLauncher v3 Neu</td><td class="num">90</td><td class="num">177747</td><td>24. März 2023, 12:42:07</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="drumherum">
+      <h2>MMM-Werkzeugkiste › Drumherum</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>MM-Kunst</td><td class="num">329</td><td class="num">305486</td><td>08. Mai 2026, 18:03:50</td></tr>
+            <tr><td>Maniac Mansion Mania Comics Neu</td><td class="num">752</td><td class="num">628608</td><td>02. Dezember 2021, 19:20:52</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="allgemein-diskussionen">
+      <h2>Allgemein › Allgemeine Diskussionen</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Game Angebote und Schnäppchen Neu</td><td class="num">60</td><td class="num">120663</td><td>15. Mai 2020, 18:38:45</td></tr>
+            <tr><td>Tipps gegen Prokrastination Neu</td><td class="num">9</td><td class="num">31016</td><td>09. Oktober 2018, 07:46:31</td></tr>
+            <tr><td>Maniac Birthday Neu</td><td class="num">493</td><td class="num">376174</td><td>13. Dezember 2017, 20:42:47</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="fangames">
+      <h2>Allgemein › Fan-Games &amp; Freegames</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Freegames Neu</td><td class="num">0</td><td class="num">51485</td><td>03. März 2008, 09:08:32</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="international">
+      <h2>MMM-International › International Board</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Übersetzer gesucht! Neu</td><td class="num">68</td><td class="num">150000</td><td>27. Juni 2021, 19:54:37</td></tr>
+            <tr><td>Proofreading collection point (Sammelstelle für Korrektur-lesen) Neu</td><td class="num">24</td><td class="num">46510</td><td>12. Januar 2010, 17:22:35</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="notm-de">
+      <h2>Night of the Meteor › Deutsch</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Willkommen im deutschen NotM-Forum!</td><td class="num">0</td><td class="num">26695</td><td>30. Oktober 2010, 17:05:46</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="notm-en">
+      <h2>Night of the Meteor › English</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thread</th>
+              <th class="num">Antworten</th>
+              <th class="num">Aufrufe</th>
+              <th>Letzter Beitrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Welcome to the English forum of NotM!</td><td class="num">0</td><td class="num">22312</td><td>30. Oktober 2010, 17:02:10</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <p class="foot">
+      <em>Hinweis: <strong>NotM Entwicklerforum</strong> wird hier bewusst nicht erfasst.</em>
+    </p>
+    <p class="foot" style="margin-top: 0.75rem; font-size: 0.8rem;">
+      Inhalt aus dem Projekt: <code>research-forum/02-gepinnte-threads.md</code> — bei Änderungen Markdown und HTML synchron halten.
+    </p>
+  </div>
+</body>
+</html>
