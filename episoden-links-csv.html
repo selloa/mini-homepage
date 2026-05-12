@@ -93,14 +93,21 @@
     let allRows = [];
     let columnHeaders = [];
 
+    /**
+     * Spalten, die zwar in der CSV stehen, aber im UI nicht angezeigt werden sollen.
+     * Die Daten bleiben in der CSV erhalten – sie werden nur nicht im Browser exponiert.
+     */
+    const HIDDEN_COLUMNS = new Set([
+      "Download-Link",
+      "Download-Link (clean)"
+    ]);
+
     /** Spalten-Überschriften (bekannte Keys); weitere CSV-Spalten erscheinen automatisch. */
     const COLUMN_LABELS = {
       kategorie: "Kategorie",
       episode: "Episode",
       wiki_url: "Wiki (ManiacWiki)",
-      "Longplay-Link": "Longplay",
-      "Download-Link": "Download",
-      "Download-Link (clean)": "Download (clean)"
+      "Longplay-Link": "Longplay"
     };
 
     function columnTitle(key) {
@@ -178,12 +185,6 @@
       if (columnKey === "Longplay-Link" && /youtube\.com|youtu\.be/i.test(url)) {
         return "\u25B6 YouTube";
       }
-      if (columnKey === "Download-Link") {
-        return "\u2B07 Download";
-      }
-      if (columnKey === "Download-Link (clean)") {
-        return "\u2B07 Download (clean)";
-      }
       return url;
     }
 
@@ -247,7 +248,7 @@
         let csvText = await response.text();
         csvText = csvText.replace(/^\uFEFF/, "");
         const parsed = parseCsv(csvText);
-        columnHeaders = parsed.headers;
+        columnHeaders = parsed.headers.filter((key) => !HIDDEN_COLUMNS.has(key));
         allRows = parsed.rows;
 
         if (allRows.length === 0) {
